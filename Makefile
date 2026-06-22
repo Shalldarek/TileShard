@@ -1,8 +1,8 @@
 TARGET  = tileshard
 CXX     = g++
 CC      = gcc
-CXXFLAGS = -Wall -g -I. -I./modules
-CFLAGS   = -Wall -g -I. -I./modules
+CFLAGS   = -Wall -g -I. -I./modules -I./modules/include
+CXXFLAGS = -Wall -g -I. -I./modules -I./modules/include
 LDFLAGS  = -lsqlite3
 
 CPP_SOURCES = $(wildcard worker/src/*.cpp)

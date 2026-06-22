@@ -78,3 +78,7 @@ bool DbManager::createTable() {
     
     return true;
 }
+
+sqlite3* DbManager::getDb() {
+    return db;
+}

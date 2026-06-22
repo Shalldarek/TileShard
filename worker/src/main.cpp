@@ -4,6 +4,7 @@
 
 extern "C" {
     #include "../modules/include/echo.h"
+    #include "../modules/include/getfolders.h"
 }
 
 int main() {
@@ -26,7 +27,9 @@ int main() {
         if (input == "exit") {
             run = false;
         } else if (input.substr(0, 5) == "echo ") {
-            echo(input.substr(5).c_str());;
+            echo(input.substr(5).c_str());
+        } else if (input.substr(0, 10) == "getfolders") {
+            getFolders(dbManager.getDb());
         } else {
             std::cout << "Unknown command: " << input << std::endl;
         }

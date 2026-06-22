@@ -12,4 +12,5 @@ public:
     ~DbManager();
 
     bool createTable();
+    sqlite3* getDb();
 };
