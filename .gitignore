@@ -1,4 +1,4 @@
-tiles.db
+*.db
 *.o
 __pycache__
 .venv

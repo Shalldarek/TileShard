@@ -9,6 +9,10 @@ extern "C" {
     #include "../modules/include/updatefolder.h"
     #include "../modules/include/allcommands.h"
     #include "../modules/include/deletefolder.h"
+    #include "../modules/include/getnotes.h"
+    #include "../modules/include/addnote.h"
+    #include "../modules/include/updatenote.h"
+    #include "../modules/include/deletenote.h"
 }
 
 int main() {
@@ -85,6 +89,79 @@ int main() {
                     } catch (const std::invalid_argument&) {
                         std::cout << "Error: Invalid folder ID. Please provide a valid integer." << std::endl;
                     }
+                }
+            }
+        }
+        else if (command == "getn") {
+            getNotes(dbManager.getDb());
+        }
+        else if (command == "addn") {
+            size_t folderIdEnd = args.find(' ');
+
+            if (folderIdEnd == std::string::npos) {
+                std::cout << "Error: Folder ID, title, and content required. Usage: addn <folder_id> <title> <content>" << std::endl;
+            } else {
+                std::string folderIdStr = args.substr(0, folderIdEnd);
+                std::string noteArgs = args.substr(folderIdEnd + 1);
+                size_t titleEnd = noteArgs.find(' ');
+
+                if (titleEnd == std::string::npos) {
+                    std::cout << "Error: Title and content required. Usage: addn <folder_id> <title> <content>" << std::endl;
+                } else {
+                    std::string title = noteArgs.substr(0, titleEnd);
+                    std::string content = noteArgs.substr(titleEnd + 1);
+
+                    if (content.empty()) {
+                        std::cout << "Error: Content required. Usage: addn <folder_id> <title> <content>" << std::endl;
+                    } else {
+                        try {
+                            int folder_id = std::stoi(folderIdStr);
+                            addNote(dbManager.getDb(), folder_id, title.c_str(), content.c_str());
+                        } catch (const std::invalid_argument&) {
+                            std::cout << "Error: Invalid folder ID. Please provide a valid integer." << std::endl;
+                        }
+                    }
+                }
+            }
+        }
+        else if (command == "updn") {
+            size_t noteIdEnd = args.find(' ');
+
+            if (noteIdEnd == std::string::npos) {
+                std::cout << "Error: Note ID, title, and content required. Usage: updn <note_id> <new_title> <new_content>" << std::endl;
+            } else {
+                std::string noteIdStr = args.substr(0, noteIdEnd);
+                std::string noteArgs = args.substr(noteIdEnd + 1);
+                size_t titleEnd = noteArgs.find(' ');
+
+                if (titleEnd == std::string::npos) {
+                    std::cout << "Error: Title and content required. Usage: updn <note_id> <new_title> <new_content>" << std::endl;
+                } else {
+                    std::string newTitle = noteArgs.substr(0, titleEnd);
+                    std::string newContent = noteArgs.substr(titleEnd + 1);
+
+                    if (newContent.empty()) {
+                        std::cout << "Error: Content required. Usage: updn <note_id> <new_title> <new_content>" << std::endl;
+                    } else {
+                        try {
+                            int note_id = std::stoi(noteIdStr);
+                            updateNote(dbManager.getDb(), note_id, newTitle.c_str(), newContent.c_str());
+                        } catch (const std::invalid_argument&) {
+                            std::cout << "Error: Invalid note ID. Please provide a valid integer." << std::endl;
+                        }
+                    }
+                }
+            }
+        }
+        else if (command == "deln") {
+            if (args.empty()) {
+                std::cout << "Error: Note ID required. Usage: deln <note_id>" << std::endl;
+            } else {
+                try {
+                    int note_id = std::stoi(args);
+                    deleteNote(dbManager.getDb(), note_id);
+                } catch (const std::invalid_argument&) {
+                    std::cout << "Error: Invalid note ID. Please provide a valid integer." << std::endl;
                 }
             }
         }
