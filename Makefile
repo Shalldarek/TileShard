@@ -8,7 +8,7 @@ LDFLAGS  = -lsqlite3
 CPP_SOURCES = $(wildcard worker/src/*.cpp)
 CPP_OBJECTS = $(CPP_SOURCES:.cpp=.o)
 
-C_SOURCES = $(wildcard modules/*.c)
+C_SOURCES = $(wildcard modules/src/*.c)
 C_OBJECTS = $(C_SOURCES:.c=.o)
 
 OBJECTS = $(CPP_OBJECTS) $(C_OBJECTS)
