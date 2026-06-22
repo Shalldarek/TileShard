@@ -2,6 +2,10 @@
 #include <cstdlib>
 #include "../include/DbManager.h"
 
+const std::string GREEN = "\033[32m";
+const std::string RED = "\033[31m";
+const std::string RESET = "\033[0m";
+
 extern "C" {
     #include "../modules/include/echo.h"
     #include "../modules/include/getfolders.h"
@@ -44,19 +48,23 @@ int main() {
             run = false;
         } 
         else if (command == "echo") {
+            std::cout << GREEN << "✓ " << RESET;
             echo(args.c_str());
         } 
         else if (command == "getf") {
+            std::cout << GREEN << "✓ " << RESET;
             getFolders(dbManager.getDb());
         } 
         else if (command == "addf") {
             if (args.empty()) {
                 std::cout << "Error: Folder name required. Usage: addf <folder_name>" << std::endl;
             } else {
+                std::cout << GREEN << "✓ " << RESET;
                 addFolder(dbManager.getDb(), args.c_str());
             }
         } 
         else if (command == "help") {
+            std::cout << GREEN << "✓ " << RESET;
             allCommands();
         }
         else if (command == "delf") {
@@ -65,6 +73,7 @@ int main() {
             } else {
                 try {
                     int folder_id = std::stoi(args);
+                    std::cout << GREEN << "✓ " << RESET;
                     deleteFolder(dbManager.getDb(), folder_id);
                 } catch (const std::invalid_argument&) {
                     std::cout << "Error: Invalid folder ID. Please provide a valid integer." << std::endl;
@@ -85,6 +94,7 @@ int main() {
                 } else {
                     try {
                         int folder_id = std::stoi(folderIdStr);
+                        std::cout << GREEN << "✓ " << RESET;
                         updateFolder(dbManager.getDb(), folder_id, newFolderName.c_str());
                     } catch (const std::invalid_argument&) {
                         std::cout << "Error: Invalid folder ID. Please provide a valid integer." << std::endl;
@@ -93,6 +103,7 @@ int main() {
             }
         }
         else if (command == "getn") {
+            std::cout << GREEN << "✓ " << RESET;
             getNotes(dbManager.getDb());
         }
         else if (command == "addn") {
@@ -116,6 +127,7 @@ int main() {
                     } else {
                         try {
                             int folder_id = std::stoi(folderIdStr);
+                            std::cout << GREEN << "✓ " << RESET;
                             addNote(dbManager.getDb(), folder_id, title.c_str(), content.c_str());
                         } catch (const std::invalid_argument&) {
                             std::cout << "Error: Invalid folder ID. Please provide a valid integer." << std::endl;
@@ -145,6 +157,7 @@ int main() {
                     } else {
                         try {
                             int note_id = std::stoi(noteIdStr);
+                            std::cout << GREEN << "✓ " << RESET;
                             updateNote(dbManager.getDb(), note_id, newTitle.c_str(), newContent.c_str());
                         } catch (const std::invalid_argument&) {
                             std::cout << "Error: Invalid note ID. Please provide a valid integer." << std::endl;
@@ -159,6 +172,7 @@ int main() {
             } else {
                 try {
                     int note_id = std::stoi(args);
+                    std::cout << GREEN << "✓ " << RESET;
                     deleteNote(dbManager.getDb(), note_id);
                 } catch (const std::invalid_argument&) {
                     std::cout << "Error: Invalid note ID. Please provide a valid integer." << std::endl;
@@ -166,7 +180,7 @@ int main() {
             }
         }
         else {
-            std::cout << "Unknown command: " << input << std::endl;
+            std::cout << RED << "✗ Unknown command: " << input << RESET << std::endl;
         }
     }
 
