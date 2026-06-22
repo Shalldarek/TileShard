@@ -13,25 +13,23 @@ void getFolders(sqlite3 *db) {
         return;
     }
 
-    //If there are no folders, print a message and return
-    if (sqlite3_step(stmt) != SQLITE_ROW) {
-        printf("No folders found.\n");
-        sqlite3_finalize(stmt);
-        return;
-    } else {
-        printf("\n--- All folders ---\n");
-
-        while (sqlite3_step(stmt) == SQLITE_ROW) {
-            int id = sqlite3_column_int(stmt, 0);
-            const unsigned char *name = sqlite3_column_text(stmt, 1);
-            const unsigned char *date = sqlite3_column_text(stmt, 2);
-
-            printf("ID: %d, Name: %s, Date: %s\n", id, name, date);
-        }
-        printf("-------------------------------\n");
-
-        sqlite3_finalize(stmt);
-    }
-
+    printf("\n-------------------- All folders --------------------\n\n");
     
+    int rowCount = 0;
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        const unsigned char *name = sqlite3_column_text(stmt, 1);
+        const unsigned char *date = sqlite3_column_text(stmt, 2);
+
+        printf("ID: %d, Name: %s, Date: %s\n", id, name, date);
+        rowCount++;
+    }
+    
+    if (rowCount == 0) {
+        printf("No folders found.\n");
+    }
+    
+    printf("\n");
+
+    sqlite3_finalize(stmt);
 }

@@ -5,6 +5,8 @@
 extern "C" {
     #include "../modules/include/echo.h"
     #include "../modules/include/getfolders.h"
+    #include "../modules/include/addfolder.h"
+    #include "../modules/include/allcommands.h"
 }
 
 int main() {
@@ -24,13 +26,34 @@ int main() {
         std::cout << "§ ";
         std::getline(std::cin, input);
 
-        if (input == "exit") {
+        if (input.empty()) {
+            continue;
+        }
+
+        size_t spacePos = input.find(' ');
+        std::string command = (spacePos == std::string::npos) ? input : input.substr(0, spacePos);
+        std::string args = (spacePos == std::string::npos) ? "" : input.substr(spacePos + 1);
+
+        if (command == "exit") {
             run = false;
-        } else if (input.substr(0, 5) == "echo ") {
-            echo(input.substr(5).c_str());
-        } else if (input.substr(0, 10) == "getfolders") {
+        } 
+        else if (command == "echo") {
+            echo(args.c_str());
+        } 
+        else if (command == "getf") {
             getFolders(dbManager.getDb());
-        } else {
+        } 
+        else if (command == "addf") {
+            if (args.empty()) {
+                std::cout << "Error: Folder name required. Usage: addf <folder_name>" << std::endl;
+            } else {
+                addFolder(dbManager.getDb(), args.c_str());
+            }
+        } 
+        else if (command == "help") {
+            allCommands();
+        }
+        else {
             std::cout << "Unknown command: " << input << std::endl;
         }
     }
