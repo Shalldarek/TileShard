@@ -1,4 +1,3 @@
-from fastapi import HTTPException, status
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -9,9 +8,9 @@ def get_folders(db: Session):
     ).mappings().all()
 
     if not folders:
-        return {"message": "No folders found."}
+        return None
 
-    return {"folders": folders}
+    return folders
 
 
 def create_folder(db: Session, name: str):
@@ -27,7 +26,7 @@ def create_folder(db: Session, name: str):
         {"folder_id": folder_id}
     ).mappings().first()
 
-    return {"message": "Folder created successfully.", "folder": folder}
+    return folder
 
 
 def update_folder(db: Session, folder_id: int, name: str):
@@ -37,10 +36,7 @@ def update_folder(db: Session, folder_id: int, name: str):
     ).mappings().first()
 
     if not existing_folder:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Folder not found."
-        )
+        return None
 
     db.execute(
         text("UPDATE folders SET name = :name WHERE id = :folder_id"),
@@ -53,7 +49,7 @@ def update_folder(db: Session, folder_id: int, name: str):
         {"folder_id": folder_id}
     ).mappings().first()
 
-    return {"message": "Folder updated successfully.", "folder": updated_folder}
+    return updated_folder
 
 
 def delete_folder(db: Session, folder_id: int):
@@ -63,10 +59,7 @@ def delete_folder(db: Session, folder_id: int):
     ).mappings().first()
 
     if not existing_folder:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Folder not found."
-        )
+        return False
 
     db.execute(
         text("DELETE FROM folders WHERE id = :folder_id"),
@@ -74,4 +67,72 @@ def delete_folder(db: Session, folder_id: int):
     )
     db.commit()
 
-    return {"message": "Folder deleted successfully."}
+    return True
+
+def get_notes(db: Session):
+    notes = db.execute(
+        text("SELECT * FROM notes")
+    ).mappings().all()
+
+    if not notes:
+        return None
+
+    return notes
+
+def get_note_by_id(db: Session, note_id: int):
+    note = db.execute(
+        text("SELECT * FROM notes WHERE id = :note_id"),
+        {"note_id": note_id}
+    ).mappings().first()
+
+    if not note:
+        return None
+
+    return note
+
+
+def create_note(db: Session, title: str, content: str):
+    result = db.execute(
+        text("INSERT INTO notes (title, content) VALUES (:title, :content)"),
+        {"title": title, "content": content}
+    )
+    db.commit()
+
+    note_id = result.lastrowid
+    note = db.execute(
+        text("SELECT * FROM notes WHERE id = :note_id"),
+        {"note_id": note_id}
+    ).mappings().first()
+
+    return note
+
+
+def update_note(db: Session, note_id: int, title: str, content: str):
+    result = db.execute(
+        text("UPDATE notes SET title = :title, content = :content WHERE id = :note_id"),
+        {"title": title, "content": content, "note_id": note_id}
+    )
+    db.commit()
+
+    if result.rowcount == 0:
+        return None
+
+    updated_note = db.execute(
+        text("SELECT * FROM notes WHERE id = :note_id"),
+        {"note_id": note_id}
+    ).mappings().first()
+
+    return updated_note
+
+
+def delete_note(db: Session, note_id: int):
+    result = db.execute(
+        text("DELETE FROM notes WHERE id = :note_id"),
+        {"note_id": note_id}
+    )
+    db.commit()
+
+    if result.rowcount == 0:
+        return False
+
+    return True

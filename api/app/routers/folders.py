@@ -5,7 +5,7 @@ from api.app.crud import (
     update_folder as update_folder_in_db,
 )
 from api.app.database import get_db
-from fastapi import APIRouter, Body, Depends, status
+from fastapi import APIRouter, Body, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 
@@ -16,20 +16,37 @@ router = APIRouter(
 
 @router.get("/")
 def get_folders(db: Session = Depends(get_db)):
-    return get_folders_in_db(db)
+    folders = get_folders_in_db(db)
+
+    if folders is None:
+        raise HTTPException(status_code=404, detail="No folders found.")
+
+    return {"folders": folders}
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_folder(name: str = Body(...), db: Session = Depends(get_db)):
-    return create_folder_in_db(db, name)
+    folder = create_folder_in_db(db, name)
+
+    return {"message": "Folder created successfully.", "folder": folder}
 
 
 @router.put("/{folder_id}")
 def update_folder(folder_id: int, name: str = Body(...), db: Session = Depends(get_db)):
-    return update_folder_in_db(db, folder_id, name)
+    folder = update_folder_in_db(db, folder_id, name)
+
+    if folder is None:
+        raise HTTPException(status_code=404, detail="Folder not found.")
+
+    return {"message": "Folder updated successfully.", "folder": folder}
 
 
 @router.delete("/{folder_id}")
 def delete_folder(folder_id: int, db: Session = Depends(get_db)):
-    return delete_folder_in_db(db, folder_id)
+    deleted = delete_folder_in_db(db, folder_id)
+
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Folder not found.")
+
+    return {"message": "Folder deleted successfully."}
     
