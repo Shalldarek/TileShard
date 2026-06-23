@@ -17,6 +17,7 @@ extern "C" {
     #include "../modules/include/addnote.h"
     #include "../modules/include/updatenote.h"
     #include "../modules/include/deletenote.h"
+    #include "../modules/include/print_folder_content.h"
 }
 
 int main() {
@@ -176,6 +177,19 @@ int main() {
                     deleteNote(dbManager.getDb(), note_id);
                 } catch (const std::invalid_argument&) {
                     std::cout << "Error: Invalid note ID. Please provide a valid integer." << std::endl;
+                }
+            }
+        }
+        else if (command == "printf") {
+            if (args.empty()) {
+                std::cout << "Error: Folder ID required. Usage: printf <folder_id>" << std::endl;
+            } else {
+                try {
+                    int folder_id = std::stoi(args);
+                    std::cout << GREEN << "✓ " << RESET;
+                    print_folder_content(dbManager.getDb(), folder_id);
+                } catch (const std::invalid_argument&) {
+                    std::cout << "Error: Invalid folder ID. Please provide a valid integer." << std::endl;
                 }
             }
         }
