@@ -275,44 +275,9 @@ Edit `api/app/database.py` to modify database connection settings or `api/app/ma
 
 ---
 
-## 📋 Testing
-
-```bash
-# CLI Testing
-./tileshard
-TileShard> help
-TileShard> addf "Test Folder"
-TileShard> addn 1 "Test Note" "This is a test"
-TileShard> getn
-TileShard> deln 1
-TileShard> delf 1
-TileShard> exit
-
-# API Testing
-curl -i http://localhost:8000/folders/
-curl -i -X POST http://localhost:8000/folders/ \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Test"}'
-```
-
----
-
 ## 📜 License
 
 This project is provided as-is for personal and educational use.
-
----
-
-## 💡 Future Enhancements
-
-- 🔐 User authentication and multi-user support
-- 🏷️ Tags and categories system
-- 🔍 Full-text search across notes
-- 📱 Mobile app companion
-- ☁️ Cloud synchronization
-- 🎨 Rich text editing with formatting
-- 📊 Analytics and note statistics
-- 🔔 Notifications and reminders
 
 ---
 
