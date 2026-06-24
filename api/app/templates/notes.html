@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TileShard - Notes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body class="notes-page">
+    <header class="hero notes-hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content container">
+            <div class="hero-text">
+                <div class="notes-kicker">
+                    <i class="bi bi-journal-text"></i>
+                    Note library
+                </div>
+                <h1 class="hero-title">Notes in motion</h1>
+                <p class="hero-subtitle">Read your notes in a smoother layout with folder context and an at-a-glance overview.</p>
+                <div class="notes-summary">
+                    <div class="summary-card summary-card-accent">
+                        <strong>{{ notes|length }}</strong>
+                        <span>Total notes</span>
+                    </div>
+                    <div class="summary-card">
+                        <strong>Linked</strong>
+                        <span>Organized by folder and ready to expand</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="notes-shell">
+        <section class="notes-card">
+            <div class="notes-card-header">
+                <div>
+                    <h2>Note list</h2>
+                    <p>Titles, folder placement, and content snapshots in one place.</p>
+                </div>
+                <a href="/folders/" class="btn btn-secondary">
+                    <i class="bi bi-folder2-open"></i>
+                    Folders
+                </a>
+                <a href="/docs" class="btn btn-secondary">
+                    <i class="bi bi-code-slash"></i>
+                    API docs
+                </a>
+            </div>
+
+            <div class="notes-table-wrap">
+                {% if notes %}
+                <table class="table notes-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Folder</th>
+                            <th scope="col">Updated</th>
+                            <th scope="col">Content</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for note in notes %}
+                        <tr>
+                            <td><span class="note-id">{{ note.id }}</span></td>
+                            <td class="note-title">{{ note.title }}</td>
+                            <td>
+                                {% if note.folder_name %}
+                                <span class="note-folder">{{ note.folder_name }}</span>
+                                {% else %}
+                                <span class="note-folder note-folder-empty">No folder</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ note.updated_at or note.created_at }}</td>
+                            <td class="note-content">{{ note.content }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state empty-state-notes">
+                    <i class="bi bi-journal-x"></i>
+                    <h3>No notes yet</h3>
+                    <p>Create your first note to start building connected ideas.</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+</body>
+</html>

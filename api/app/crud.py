@@ -71,7 +71,21 @@ def delete_folder(db: Session, folder_id: int):
 
 def get_notes(db: Session):
     notes = db.execute(
-        text("SELECT * FROM notes")
+        text(
+            """
+            SELECT
+                notes.id,
+                notes.folder_id,
+                folders.name AS folder_name,
+                notes.title,
+                notes.content,
+                notes.created_at,
+                notes.updated_at
+            FROM notes
+            LEFT JOIN folders ON folders.id = notes.folder_id
+            ORDER BY notes.updated_at DESC, notes.id DESC
+            """
+        )
     ).mappings().all()
 
     if not notes:

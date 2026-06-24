@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Body, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException, Request
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from api.app import crud
 from api.app.database import get_db
@@ -8,14 +9,17 @@ router = APIRouter(
     tags=["notes"]
 )
 
+templates = Jinja2Templates(directory="templates")
+
 @router.get("/")
-def get_all_notes(db: Session = Depends(get_db)):
+def get_notes(request: Request, db: Session = Depends(get_db)):
     notes = crud.get_notes(db)
 
-    if notes is None:
-        raise HTTPException(status_code=404, detail="No notes found.")
-    
-    return {"notes": notes}
+    return templates.TemplateResponse(
+        name="notes.html",
+        request=request,
+        context={"notes": notes or []}
+    )
     
 
 @router.get("/{note_id}")
