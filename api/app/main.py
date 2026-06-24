@@ -4,8 +4,14 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from api.app.routers import folders, notes
 from fastapi import FastAPI, Request
+from api.app.database import init_db
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+def startup() -> None:
+    init_db()
 
 app.include_router(folders.router)
 app.include_router(notes.router)

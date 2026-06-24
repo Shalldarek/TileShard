@@ -15,12 +15,12 @@ def get_folders(db: Session):
 
 def create_folder(db: Session, name: str):
     result = db.execute(
-        text("INSERT INTO folders (name) VALUES (:name)"),
+        text("INSERT INTO folders (name) VALUES (:name) RETURNING id"),
         {"name": name}
     )
+    folder_id = result.scalar_one()
     db.commit()
 
-    folder_id = result.lastrowid
     folder = db.execute(
         text("SELECT * FROM folders WHERE id = :folder_id"),
         {"folder_id": folder_id}
@@ -107,12 +107,12 @@ def get_note_by_id(db: Session, note_id: int):
 
 def create_note(db: Session, title: str, content: str):
     result = db.execute(
-        text("INSERT INTO notes (title, content) VALUES (:title, :content)"),
+        text("INSERT INTO notes (title, content) VALUES (:title, :content) RETURNING id"),
         {"title": title, "content": content}
     )
+    note_id = result.scalar_one()
     db.commit()
 
-    note_id = result.lastrowid
     note = db.execute(
         text("SELECT * FROM notes WHERE id = :note_id"),
         {"note_id": note_id}
@@ -123,7 +123,7 @@ def create_note(db: Session, title: str, content: str):
 
 def update_note(db: Session, note_id: int, title: str, content: str):
     result = db.execute(
-        text("UPDATE notes SET title = :title, content = :content WHERE id = :note_id"),
+        text("UPDATE notes SET title = :title, content = :content, updated_at = CURRENT_TIMESTAMP WHERE id = :note_id"),
         {"title": title, "content": content, "note_id": note_id}
     )
     db.commit()

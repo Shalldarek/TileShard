@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from fastapi.templating import Jinja2Templates
 from api.app.crud import (
     create_folder as create_folder_in_db,
@@ -15,7 +17,7 @@ router = APIRouter(
     tags=["folders"]
 )
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory=str(Path(__file__).resolve().parents[1] / "templates"))
 
 @router.get("/")
 def get_folders(request: Request, db: Session = Depends(get_db)):
