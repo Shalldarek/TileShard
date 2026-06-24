@@ -9,6 +9,7 @@
 ## ✨ Features
 
 - 📝 **Dual Interface**: Access notes via CLI REPL or REST API
+- 🖼️ **Rendered Web UI**: Browse folders and notes through FastAPI-backed HTML pages
 - 🗂️ **Folder Organization**: Structure notes into logical folders
 - 🔗 **Note Linking**: Create connections between related notes
 - 💾 **SQLite Backend**: Reliable, embedded database with no external dependencies
@@ -33,31 +34,54 @@
 ```
 TileShard/
 ├── worker/                          # CLI application
-│   ├── include/DbManager.h          # Database manager class definition
+│   ├── include/
+│   │   └── DbManager.h              # Database manager class definition
 │   └── src/
 │       ├── DbManager.cpp            # SQLite wrapper implementation
 │       └── main.cpp                 # REPL CLI engine
 │
 ├── modules/                         # Core C operations library
-│   ├── include/                     # Function declarations
-│   │   ├── getfolders.h / getnotes.h      # Read operations
-│   │   ├── addfolder.h / addnote.h        # Create operations
-│   │   ├── updatefolder.h / updatenote.h  # Update operations
-│   │   ├── deletefolder.h / deletenote.h  # Delete operations
-│   │   ├── print_folder_content.h         # Display utilities
-│   │   ├── allcommands.h                  # Help system
-│   │   └── echo.h                         # Testing utility
-│   └── src/                         # Implementation files
+│   ├── include/
+│   │   ├── addfolder.h              # Create folder command
+│   │   ├── addnote.h                # Create note command
+│   │   ├── allcommands.h            # CLI help text
+│   │   ├── deletefolder.h           # Delete folder command
+│   │   ├── deletenote.h             # Delete note command
+│   │   ├── echo.h                   # Utility echo command
+│   │   ├── getfolders.h             # List folders command
+│   │   ├── getnotes.h               # List notes command
+│   │   ├── print_folder_content.h   # Folder content display helper
+│   │   ├── updatefolder.h           # Rename folder command
+│   │   └── updatenote.h             # Note update command
+│   └── src/
+│       ├── addfolder.c              # Folder insert implementation
+│       ├── addnote.c                # Note insert implementation
+│       ├── allcommands.c            # Help text output
+│       ├── deletefolder.c           # Folder delete implementation
+│       ├── deletenote.c             # Note delete implementation
+│       ├── echo.c                   # Echo utility
+│       ├── getfolders.c             # Folder query implementation
+│       ├── getnotes.c               # Note query implementation
+│       ├── print_folder_content.c   # Folder content renderer
+│       ├── updatefolder.c           # Folder update implementation
+│       └── updatenote.c             # Note update implementation
 │
 ├── api/                             # REST API application
 │   ├── app/
 │   │   ├── __init__.py              # FastAPI app initialization
-│   │   ├── main.py                  # Root endpoint
+│   │   ├── main.py                  # Root HTML page
 │   │   ├── database.py              # SQLAlchemy configuration
 │   │   ├── crud.py                  # Raw SQL CRUD operations
-│   │   └── routers/
-│   │       ├── folders.py           # Folders endpoints
-│   │       └── notes.py             # Notes endpoints (future)
+│   │   ├── routers/
+│   │   │   ├── folders.py           # Folder routes and HTML list view
+│   │   │   └── notes.py             # Note routes and HTML list view
+│   │   ├── static/
+│   │   │   ├── style.css            # Shared page styling
+│   │   │   └── script.js            # Frontend script placeholder
+│   │   └── templates/
+│   │       ├── mainpage.html        # Landing page template
+│   │       ├── folders.html         # Folder list template
+│   │       └── notes.html           # Note list template
 │   └── requirements.txt             # Python dependencies
 │
 ├── tiles.db                         # SQLite database (shared)
@@ -137,22 +161,44 @@ TileShard> exit
 
 ---
 
-## 🌐 REST API Endpoints
+## 🌐 Web UI & API Endpoints
 
 The FastAPI server runs on `http://localhost:8000` by default.
+
+### HTML Pages
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/` | Landing page |
+| `GET` | `/folders/` | Folder browser rendered from `folders.html` |
+| `GET` | `/notes/` | Note browser rendered from `notes.html` |
+
+### Static Assets
+
+| Path | Description |
+|------|-------------|
+| `/static/style.css` | Shared styling for the web UI |
+| `/static/script.js` | Frontend script asset placeholder |
 
 ### 📊 Folders Endpoints
 
 | Method | Endpoint | Body | Description |
 |--------|----------|------|-------------|
-| `GET` | `/` | — | Welcome message |
+| `GET` | `/` | — | Landing page HTML |
 | `GET` | `/folders/` | — | 📋 List all folders |
 | `POST` | `/folders/` | `{"name": "..."}` | ➕ Create a folder |
 | `PUT` | `/folders/{id}` | `{"name": "..."}` | ✏️ Rename a folder |
 | `DELETE` | `/folders/{id}` | — | 🗑️ Delete a folder |
 
-### Notes Endpoints (Future)
-Notes CRUD is implemented in C modules but not yet exposed via REST API.
+### Notes Endpoints
+
+| Method | Endpoint | Body | Description |
+|--------|----------|------|-------------|
+| `GET` | `/notes/` | — | 📋 List all notes with folder context |
+| `GET` | `/notes/{id}` | — | Show a single note |
+| `POST` | `/notes/` | `{"title": "...", "content": "..."}` | ➕ Create a note |
+| `PUT` | `/notes/{id}` | `{"title": "...", "content": "..."}` | ✏️ Update a note |
+| `DELETE` | `/notes/{id}` | — | 🗑️ Delete a note |
 
 ### Example API Usage
 ```bash

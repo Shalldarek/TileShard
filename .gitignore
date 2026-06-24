@@ -1,3 +1,4 @@
+tileshard
 *.db
 *.o
 __pycache__
