@@ -1,92 +1,106 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>TileShard</title>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-		<link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
-	</head>
-	<body>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-			<div class="container">
-				<a class="navbar-brand" href="/">TileShard</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="nav">
-					<ul class="navbar-nav ms-auto">
-						<li class="nav-item"><a class="nav-link" href="/folders/">Folders</a></li>
-						<li class="nav-item"><a class="nav-link" href="/docs">API Docs</a></li>
-						<li class="nav-item"><a class="nav-link" href="https://github.com/" target="_blank">Repo</a></li>
-					</ul>
-				</div>
-			</div>
-		</nav>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TileShard – Note Linking Redefined</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Connect your thoughts</h1>
+        <p class="hero-subtitle">Lightweight, fast note-taking with SQLite. Link ideas together via CLI or REST API.</p>
+        <div class="hero-buttons">
+          <a href="/folders/" class="btn btn-primary">
+            <i class="bi bi-folder2-open"></i> Explore
+          </a>
+          <a href="/docs" class="btn btn-secondary">
+            <i class="bi bi-code-slash"></i> API
+          </a>
+        </div>
+      </div>
+      <div class="hero-graphic">
+        <div class="nodes">
+          <div class="node node-1"></div>
+          <div class="node node-2"></div>
+          <div class="node node-3"></div>
+          <div class="connection c1"></div>
+          <div class="connection c2"></div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-		<header class="hero py-5">
-			<div class="container">
-				<div class="row align-items-center">
-					<div class="col-md-7">
-						<h1 class="display-5 mb-3">Simple, fast note linking with TileShard</h1>
-						<p class="lead text-muted">Lightweight SQLite-backed notes and folders. Use the CLI or the REST API to create, link, and explore your notes.</p>
-						<div class="mt-4">
-							<a class="btn btn-primary btn-lg me-2" href="/folders/">View Folders</a>
-							<a class="btn btn-outline-secondary btn-lg" href="/docs">Explore API</a>
-						</div>
-					</div>
-					<div class="col-md-5 mt-4 mt-md-0">
-						<div class="card shadow-sm feature-card">
-							<div class="card-body">
-								<h5 class="card-title">Quick Look</h5>
-								<p class="card-text">Folders, notes, and bidirectional links. Fast C modules with a neat FastAPI wrapper.</p>
-								<ul class="list-unstyled mb-0">
-									<li>- CLI & API</li>
-									<li>- SQLite backend</li>
-									<li>- Simple link model</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
+  <main>
+    <section class="features">
+      <div class="container">
+        <h2 class="section-title">Built for developers</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-file-text"></i>
+            </div>
+            <h3>Notes & Folders</h3>
+            <p>Create and organize notes in folders. Simple hierarchy, zero complexity.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-link-45deg"></i>
+            </div>
+            <h3>Bidirectional Links</h3>
+            <p>Link notes together. Build networks of connected ideas effortlessly.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-cpu"></i>
+            </div>
+            <h3>Fast & Lightweight</h3>
+            <p>SQLite backend with optimized C modules. Quick, reliable, no overhead.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="bi bi-terminal"></i>
+            </div>
+            <h3>CLI & API</h3>
+            <p>Full-featured command-line interface or REST API. Your choice.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-		<main class="py-5">
-			<div class="container">
-				<div class="row g-4">
-					<div class="col-md-4">
-						<div class="card h-100 shadow-sm">
-							<div class="card-body">
-								<h5 class="card-title">Notes</h5>
-								<p class="card-text text-muted">Create and edit notes via C CLI or the API. Titles, content, timestamps.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="card h-100 shadow-sm">
-							<div class="card-body">
-								<h5 class="card-title">Folders</h5>
-								<p class="card-text text-muted">Organize notes into folders with unique names and quick listing endpoints.</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="card h-100 shadow-sm">
-							<div class="card-body">
-								<h5 class="card-title">Links</h5>
-								<p class="card-text text-muted">Link notes together; use the link table to build networks of ideas.</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</main>
+    <section class="stack">
+      <div class="container">
+        <h2 class="section-title">Modern stack</h2>
+        <div class="stack-grid">
+          <div class="stack-item">
+            <span class="stack-label">Backend</span>
+            <span class="stack-tech">C / C++</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-label">API</span>
+            <span class="stack-tech">FastAPI</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-label">Database</span>
+            <span class="stack-tech">SQLite</span>
+          </div>
+          <div class="stack-item">
+            <span class="stack-label">ORM</span>
+            <span class="stack-tech">SQLAlchemy</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-		<footer class="py-4 bg-light mt-auto">
-			<div class="container text-center text-muted small">© TileShard — Lightweight note linking. API available at <a href="/docs">/docs</a></div>
-		</footer>
-
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-abc" crossorigin="anonymous"></script>
-	</body>
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 TileShard. <a href="/docs">View API docs</a></p>
+    </div>
+  </footer>
+</body>
 </html>
