@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">Folders List</h1>
+        
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for folder in folders %}
+                <tr>
+                    <td>{{ folder.id }}</td>
+                    <td>{{ folder.name }}</td>
+                    <td>{{ folder.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

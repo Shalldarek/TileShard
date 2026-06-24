@@ -1,3 +1,4 @@
+from fastapi.templating import Jinja2Templates
 from api.app.crud import (
     create_folder as create_folder_in_db,
     delete_folder as delete_folder_in_db,
@@ -5,7 +6,7 @@ from api.app.crud import (
     update_folder as update_folder_in_db,
 )
 from api.app.database import get_db
-from fastapi import APIRouter, Body, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 
@@ -14,14 +15,20 @@ router = APIRouter(
     tags=["folders"]
 )
 
-@router.get("/")
-def get_folders(db: Session = Depends(get_db)):
+templates = Jinja2Templates(directory="templates")
+
+@router.get("/", response_class=templates.TemplateResponse)
+def get_folders(request: Request, db: Session = Depends(get_db)):
     folders = get_folders_in_db(db)
 
     if folders is None:
         raise HTTPException(status_code=404, detail="No folders found.")
 
-    return {"folders": folders}
+    return templates.TemplateResponse(
+        name="folders.html",
+        request=request,
+        context={"folders": folders}
+    )
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
