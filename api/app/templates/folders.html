@@ -1,30 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TileShard - Folders</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
 </head>
-<body>
-    <div class="container mt-4">
-        <h1 class="mb-4">Folders List</h1>
-        
-        <table class="table table-striped table-hover">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Created At</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for folder in folders %}
-                <tr>
-                    <td>{{ folder.id }}</td>
-                    <td>{{ folder.name }}</td>
-                    <td>{{ folder.created_at }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<body class="folders-page">
+    <header class="hero folders-hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content container">
+            <div class="hero-text">
+                <div class="folders-kicker">
+                    <i class="bi bi-folder2-open"></i>
+                    Library view
+                </div>
+                <h1 class="hero-title">Folders at a glance</h1>
+                <p class="hero-subtitle">Browse your note containers in a cleaner, more focused view that matches the rest of TileShard.</p>
+                <div class="folders-summary">
+                    <div class="summary-card">
+                        <strong>{{ folders|length }}</strong>
+                        <span>Total folders</span>
+                    </div>
+                    <div class="summary-card">
+                        <strong>Fast</strong>
+                        <span>SQLite-backed and ready to grow</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-graphic">
+                <div class="nodes">
+                    <div class="node node-1"></div>
+                    <div class="node node-2"></div>
+                    <div class="node node-3"></div>
+                    <div class="connection c1"></div>
+                    <div class="connection c2"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="folders-shell">
+        <section class="folders-card">
+            <div class="folders-card-header">
+                <div>
+                    <h2>Folder list</h2>
+                    <p>Each folder is a home for related notes.</p>
+                </div>
+                <a href="/docs" class="btn btn-secondary">
+                    <i class="bi bi-code-slash"></i>
+                    API docs
+                </a>
+            </div>
+
+            <div class="folders-table-wrap">
+                {% if folders %}
+                <table class="table folders-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for folder in folders %}
+                        <tr>
+                            <td><span class="folder-id">{{ folder.id }}</span></td>
+                            <td class="folder-name">{{ folder.name }}</td>
+                            <td>{{ folder.created_at }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <i class="bi bi-folder-x"></i>
+                    <h3>No folders yet</h3>
+                    <p>Create your first folder to start organizing notes.</p>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
 </body>
 </html>

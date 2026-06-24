@@ -17,7 +17,7 @@ router = APIRouter(
 
 templates = Jinja2Templates(directory="templates")
 
-@router.get("/", response_class=templates.TemplateResponse)
+@router.get("/")
 def get_folders(request: Request, db: Session = Depends(get_db)):
     folders = get_folders_in_db(db)
 

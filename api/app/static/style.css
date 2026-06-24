@@ -119,6 +119,15 @@ body {
   color: var(--text-primary);
 }
 
+.hero-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
 .hero-subtitle {
   font-size: 1.1rem;
   color: var(--text-secondary);
@@ -364,6 +373,212 @@ body {
 
 .footer a:hover {
   color: var(--accent-dark);
+}
+
+.folders-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(37, 99, 235, 0.08), transparent 42%),
+    linear-gradient(180deg, var(--bg-primary) 0%, rgba(248, 249, 250, 0.85) 100%);
+}
+
+.folders-hero {
+  min-height: auto;
+  padding: 4rem 2rem 3rem;
+}
+
+.folders-hero .hero-bg {
+  background: linear-gradient(135deg, #eef4fb 0%, #dce9f8 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .folders-hero .hero-bg {
+    background: linear-gradient(135deg, #141824 0%, #101523 100%);
+  }
+}
+
+.folders-hero .hero-content {
+  align-items: end;
+  gap: 2rem;
+}
+
+.folders-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--accent-dark);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+
+.folders-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.summary-card {
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: var(--shadow-md);
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.summary-card span {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.folders-shell {
+  padding: 0 2rem 4rem;
+}
+
+.folders-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  backdrop-filter: blur(14px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .folders-card {
+    background: rgba(26, 26, 26, 0.75);
+  }
+}
+
+.folders-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  .folders-card-header {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+.folders-card-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.folders-card-header p {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.folders-table-wrap {
+  overflow-x: auto;
+}
+
+.folders-table {
+  margin: 0;
+  background: transparent;
+}
+
+.folders-table thead th {
+  border-top: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+}
+
+.folders-table tbody td {
+  border-top: 1px solid var(--border);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.folders-table tbody tr {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.folders-table tbody tr:hover {
+  background: rgba(37, 99, 235, 0.04);
+}
+
+.folder-id {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.folder-name {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.empty-state {
+  padding: 4rem 1.5rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.empty-state i {
+  display: inline-flex;
+  width: 4rem;
+  height: 4rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  color: var(--accent);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+@media (max-width: 768px) {
+  .folders-hero,
+  .folders-shell {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .folders-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .folders-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 @media (max-width: 640px) {
